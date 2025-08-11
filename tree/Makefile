@@ -1,11 +1,17 @@
-flags =-Wall -O2 -std=c2x 
-all: clean tree
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -O2 -std=c2x
+LDFLAGS =
+TARGET = tree
+SOURCES = tree.c command_handler.c
+OBJECTS = $(SOURCES:.c=.o)
 
-tree: tree.o
-	cc ${flags} $^ -o $@ ${ldflags}
+all: clean $(TARGET)
 
-tree.o : tree.c
-	cc ${flags} -c $^ 
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-clean: 
-	rm -f *.o tree
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)

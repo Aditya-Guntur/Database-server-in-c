@@ -1,0 +1,87 @@
+# Development notes and documentation
+DEVELOPMENT_NOTES.md
+NOTES.md
+TODO.md
+*.md
+!README.md  # Keep the main README
+
+# Build outputs
+db_server.exe
+*.exe
+*.o
+*.obj
+*.dll
+*.so
+*.a
+*.lib
+*.dylib
+
+# IDE specific files
+.vscode/
+.idea/
+*.sln
+*.vcxproj*
+*.vcxproj.user
+*.sdf
+*.opensdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Debug and release directories
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bin/
+obj/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Codeium workspace
+.codeium/
+
+# WindSurf specific
+windsurf/
+
+# Local development environment files
+.env
+.env.local
+
+# Temporary files
+*.swp
+*~
+*.swo
+*~
+*.swn
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# Project specific ignores
+tree/db_server.exe

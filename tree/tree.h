@@ -1,50 +1,66 @@
-/*tree.h*/
-//This is to keep all the definitons etc
-#define _GNU_SOURCE
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<string.h>
+#ifndef TREE_H
+#define TREE_H
 
-#include<assert.h>
-#include<errno.h>
+#include <stdint.h>
 
-#define TagRoot 1
-#define TagNode 2
-#define TagLeaf 4
+// Type definitions
+typedef int8_t int8;
+typedef int16_t int16;
+typedef uint32_t uint32;
 
-#define NoError 0//Here we are keeping only multiples of 2 as then we will only have a single 1 in every binary representatino
-#define find_last(x)     find_last_linear(x)
-#define reterr(x) \
-    errno = (x);  \
-    return NULL
+typedef enum {
+    NoError = 0,
+    TagRoot = 1 << 0,
+    TagNode = 1 << 1,
+    TagLeaf = 1 << 2
+} Tag;
 
-typedef unsigned int int32;
-typedef unsigned short int int16;
-typedef unsigned char int8;
-typedef unsigned char Tag;
+// Forward declarations
+typedef struct s_node Node;
+typedef struct s_leaf Leaf;
+typedef union u_tree Tree;
 
-struct s_node{
+// Structure definitions
+struct s_node {
     Tag tag;
-    struct s_node *north;
-    struct s_node *west;
-    struct s_leaf *east;
+    Node *north;
+    Node *west;
+    Tree *east;
     int8 path[256];
 };
-typedef struct s_node Node;
 
-struct s_leaf{
+struct s_leaf {
     Tag tag;
-    union u_tree *west;
-    struct s_leaf *east;
-    int8 key[128];
-    int8 *value;//This is a pointer because the values can be huge
-    int16 size;//This is the size of the value
+    Tree *west;
+    Leaf *east;
+    int8 *key;
+    int8 *value;
+    int16 size;
 };
-typedef struct s_leaf Leaf;
 
-union u_tree{
+union u_tree {
     Node n;
     Leaf l;
 };
-typedef union u_tree Tree;
+
+// Global root node
+extern Tree root;
+
+// Function declarations
+Node *create_node(Node *parent, const int8 *path);
+Leaf *create_leaf(Node *parent, const int8 *key, const int8 *value, int16 count);
+Leaf *search_leaf(const Node *root, const int8 *key);
+Node *search_node(const Node *root, const int8 *path);
+int update_leaf(Node *root, const int8 *key, const int8 *new_value, int16 new_size);
+int delete_leaf(Node *root, const int8 *key);
+void tree_cleanup(void);
+
+// Helper macros
+#define find_last(x) find_last_linear(x)
+#define reterr(x) \
+    do { \
+        errno = (x); \
+        return NULL; \
+    } while(0)
+
+#endif // TREE_H
